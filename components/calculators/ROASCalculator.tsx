@@ -1,17 +1,27 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import './ROASCalculator.css';
 
-const ROASCalculator = () => {
-    const [spend, setSpend] = useState(5000);
-    const [cpc, setCpc] = useState(2.50);
-    const [convRate, setConvRate] = useState(2.0);
-    const [aov, setAov] = useState(150);
+interface Metrics {
+  clicks: number;
+  conversions: number;
+  revenue: number;
+  roas: string;
+  profit: number;
+}
 
-    const [metrics, setMetrics] = useState({
+const ROASCalculator: React.FC = () => {
+    const [spend, setSpend] = useState<number>(5000);
+    const [cpc, setCpc] = useState<number>(2.50);
+    const [convRate, setConvRate] = useState<number>(2.0);
+    const [aov, setAov] = useState<number>(150);
+
+    const [metrics, setMetrics] = useState<Metrics>({
         clicks: 0,
         conversions: 0,
         revenue: 0,
-        roas: 0,
+        roas: '0',
         profit: 0
     });
 
@@ -19,19 +29,19 @@ const ROASCalculator = () => {
         const clicks = spend / cpc;
         const conversions = clicks * (convRate / 100);
         const revenue = conversions * aov;
-        const roas = spend > 0 ? revenue / spend : 0;
+        const roas = spend > 0 ? (revenue / spend).toFixed(2) : '0';
         const profit = revenue - spend;
 
         setMetrics({
             clicks: Math.round(clicks),
             conversions: Math.round(conversions),
             revenue: Math.round(revenue),
-            roas: roas.toFixed(2),
+            roas: roas,
             profit: Math.round(profit)
         });
     }, [spend, cpc, convRate, aov]);
 
-    const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+    const formatCurrency = (val: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
 
     return (
         <div className="roas-calculator-card">
@@ -71,7 +81,7 @@ const ROASCalculator = () => {
 
                     <div className="result-item">
                         <span>ROAS</span>
-                        <div className={`result-value ${metrics.roas > 3 ? 'green' : metrics.roas > 1.5 ? 'yellow' : 'red'}`}>
+                        <div className={`result-value ${Number(metrics.roas) > 3 ? 'green' : Number(metrics.roas) > 1.5 ? 'yellow' : 'red'}`}>
                             {metrics.roas}x
                         </div>
                     </div>
