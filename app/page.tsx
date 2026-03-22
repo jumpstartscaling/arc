@@ -1,11 +1,11 @@
 import dynamic from 'next/dynamic';
 
 const Hero = dynamic(() => import("@/components/ui/Hero"), { ssr: true });
-const ServiceTeaser = dynamic(() => import("@/components/ui/ServiceTeaser"), { ssr: false });
-const ScalingSurvey = dynamic(() => import("@/components/interactivity/ScalingSurvey"), { ssr: false });
-const CTA = dynamic(() => import("@/components/ui/CTA"), { ssr: false });
-const AnimatedSection = dynamic(() => import("@/components/ui/AnimatedSection"), { ssr: false });
-const LazyVideo = dynamic(() => import("@/components/ui/LazyVideo"), { ssr: false });
+const ServiceTeaser = dynamic(() => import("@/components/ui/ServiceTeaser"));
+const ScalingSurvey = dynamic(() => import("@/components/interactivity/ScalingSurvey"));
+const CTA = dynamic(() => import("@/components/ui/CTA"));
+const AnimatedSection = dynamic(() => import("@/components/ui/AnimatedSection"));
+const LazyVideo = dynamic(() => import("@/components/ui/LazyVideo"));
 
 const services = [
   {

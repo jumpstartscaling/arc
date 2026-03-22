@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -14,12 +16,12 @@ export default function MoatAudit() {
         website: ''
     });
 
-    const selectFriction = (value) => {
+    const selectFriction = (value: string) => {
         setFormData({ ...formData, friction_point: value });
         setStep(2);
     };
 
-    const selectVelocity = (value) => {
+    const selectVelocity = (value: string) => {
         setFormData({ ...formData, market_velocity: value });
         runAnalysis();
     };

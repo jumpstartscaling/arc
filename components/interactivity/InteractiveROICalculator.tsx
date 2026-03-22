@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -43,7 +45,7 @@ export default function InteractiveROICalculator() {
                         <XAxis dataKey="month" stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} />
                         <YAxis stroke="var(--text-secondary)" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} tickFormatter={value => `$${value / 1000}k`} />
                         <Tooltip
-                            formatter={(v: number) => [`$${Number(v).toLocaleString()}`, 'Revenue']}
+                            formatter={(v: any) => [`$${Number(v).toLocaleString()}`, 'Revenue']}
                             labelStyle={{ color: 'var(--text-primary)' }}
                             itemStyle={{ color: 'var(--text-primary)' }}
                             contentStyle={{ background: '#0A0A0A', border: '1px solid var(--accent)', borderRadius: '8px' }}
