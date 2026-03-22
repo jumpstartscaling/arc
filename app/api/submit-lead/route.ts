@@ -1,10 +1,16 @@
 import { NextResponse } from 'next/server';
-import { submitLead } from '@/app/actions/leads';
+import { submitLead, submitSurvey } from '@/app/actions/leads';
 
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    const result = await submitLead(data);
+    
+    let result;
+    if (data.formType === 'audit_survey' || data.form_type === 'audit') {
+      result = await submitSurvey(data);
+    } else {
+      result = await submitLead(data);
+    }
     
     if (result.success) {
       return NextResponse.json({ success: true, id: result.id });

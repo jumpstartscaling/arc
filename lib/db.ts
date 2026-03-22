@@ -1,8 +1,14 @@
 import { Pool } from 'pg';
 
+const isProd = process.env.NODE_ENV === 'production';
+const dbUrl = process.env.DATABASE_URL || '';
+
+// If we are connecting to the production DB on 5434, it might not support SSL
+const useSsl = isProd && !dbUrl.includes(':5434');
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  connectionString: dbUrl,
+  ssl: useSsl ? { rejectUnauthorized: false } : false,
 });
 
 export default pool;
