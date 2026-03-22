@@ -25,16 +25,21 @@ export default function Navigation() {
   const pathname = usePathname();
 
   useEffect(() => {
+    let scrollPercent = 0;
+    
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
       
-      const progress = document.getElementById('scroll-progress');
-      if (progress) {
-        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (winScroll / height) * 100;
-        progress.style.width = scrolled + "%";
-      }
+      // Update scroll progress with requestAnimationFrame for performance
+      requestAnimationFrame(() => {
+        const progress = document.getElementById('scroll-progress');
+        if (progress) {
+          const winScroll = window.scrollY;
+          const height = document.documentElement.scrollHeight - window.innerHeight;
+          const scrolled = (winScroll / height) * 100;
+          progress.style.width = scrolled + "%";
+        }
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });

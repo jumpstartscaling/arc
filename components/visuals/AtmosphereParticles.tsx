@@ -1,7 +1,7 @@
 "use client";
 
 // src/components/visuals/AtmosphereParticles.tsx
-// Lightweight CSS-based particle effect — no Three.js needed
+// Optimized particle effect for performance
 import { useEffect, useRef } from 'react';
 
 interface Props {
@@ -13,52 +13,62 @@ export default function AtmosphereParticles({ variant = 'subtle' }: Props) {
     const animRef = useRef<number>(0);
 
     const config = {
-        subtle: { count: 60, speed: 0.3, maxSize: 2, opacity: 0.4 },
-        intense: { count: 120, speed: 0.6, maxSize: 3, opacity: 0.7 },
-        nebula: { count: 80, speed: 0.2, maxSize: 4, opacity: 0.5 },
-        sparkle: { count: 100, speed: 0.8, maxSize: 1.5, opacity: 0.8 },
+        subtle: { count: 40, speed: 0.2, maxSize: 1.5, opacity: 0.3 }, // Reduced counts for mobile performance
+        intense: { count: 80, speed: 0.5, maxSize: 2.5, opacity: 0.6 },
+        nebula: { count: 60, speed: 0.1, maxSize: 3, opacity: 0.4 },
+        sparkle: { count: 70, speed: 0.7, maxSize: 1.2, opacity: 0.7 },
     }[variant];
 
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: true });
         if (!ctx) return;
 
         let w = window.innerWidth;
         let h = window.innerHeight;
-        canvas.width = w;
-        canvas.height = h;
+        
+        // Use a high-quality resize that avoids repeated reflows
+        const setCanvasSize = () => {
+            w = window.innerWidth;
+            h = window.innerHeight;
+            canvas.width = w;
+            canvas.height = h;
+        };
+        setCanvasSize();
 
         // Create particles
         const particles = Array.from({ length: config.count }, () => ({
             x: Math.random() * w,
             y: Math.random() * h,
             vx: (Math.random() - 0.5) * config.speed,
-            vy: (Math.random() - 0.5) * config.speed - 0.1,
+            vy: (Math.random() - 0.5) * config.speed - 0.05,
             size: Math.random() * config.maxSize + 0.5,
             alpha: Math.random() * config.opacity,
             pulse: Math.random() * Math.PI * 2,
         }));
 
-        // Parse hex to RGB
+        // Optimized hex parsing
         const hexToRgb = (hex: string) => {
-            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result
-                ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) }
-                : { r: 201, g: 169, b: 97 }; // fallback gold
+            const cleanHex = hex.replace('#', '');
+            const bigint = parseInt(cleanHex, 16);
+            return {
+                r: (bigint >> 16) & 255,
+                g: (bigint >> 8) & 255,
+                b: bigint & 255
+            };
         };
 
-        const accentColor = getComputedStyle(document.documentElement)
-            .getPropertyValue('--accent').trim() || '#C9A961';
+        // Cache computed style once
+        const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#C9A961';
         const rgb = hexToRgb(accentColor);
 
+        // Debounced resize for performance
+        let resizeTimer: any;
         const handleResize = () => {
-            w = window.innerWidth;
-            h = window.innerHeight;
-            canvas.width = w;
-            canvas.height = h;
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(setCanvasSize, 200);
         };
 
         window.addEventListener('resize', handleResize);
@@ -66,29 +76,28 @@ export default function AtmosphereParticles({ variant = 'subtle' }: Props) {
         const animate = () => {
             ctx.clearRect(0, 0, w, h);
 
-            for (const p of particles) {
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
                 p.x += p.vx;
                 p.y += p.vy;
-                p.pulse += 0.02;
+                p.pulse += 0.015;
 
-                // Wrap around edges
                 if (p.x < 0) p.x = w;
                 if (p.x > w) p.x = 0;
                 if (p.y < 0) p.y = h;
                 if (p.y > h) p.y = 0;
 
-                const flickerAlpha = p.alpha * (0.5 + 0.5 * Math.sin(p.pulse));
+                const flickerAlpha = p.alpha * (0.4 + 0.6 * Math.sin(p.pulse));
 
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${flickerAlpha})`;
                 ctx.fill();
 
-                // Glow effect
-                if (p.size > 1.5) {
+                if (p.size > 1.2 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                     ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${flickerAlpha * 0.15})`;
+                    ctx.arc(p.x, p.y, p.size * 2, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${flickerAlpha * 0.1})`;
                     ctx.fill();
                 }
             }
@@ -96,16 +105,21 @@ export default function AtmosphereParticles({ variant = 'subtle' }: Props) {
             animRef.current = requestAnimationFrame(animate);
         };
 
-        animRef.current = requestAnimationFrame(animate);
+        // Delay animation slightly to prioritize LCP
+        const timer = setTimeout(() => {
+            animRef.current = requestAnimationFrame(animate);
+        }, 100);
 
         return () => {
+            clearTimeout(timer);
+            clearTimeout(resizeTimer);
             cancelAnimationFrame(animRef.current);
             window.removeEventListener('resize', handleResize);
         };
     }, [variant, config.count, config.maxSize, config.opacity, config.speed]);
 
     return (
-        <div className="fixed inset-0 -z-10 pointer-events-none">
+        <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden text-transparent" aria-hidden="true">
             <canvas
                 ref={canvasRef}
                 style={{
@@ -113,6 +127,7 @@ export default function AtmosphereParticles({ variant = 'subtle' }: Props) {
                     inset: 0,
                     width: '100%',
                     height: '100%',
+                    opacity: 0.6,
                 }}
             />
         </div>

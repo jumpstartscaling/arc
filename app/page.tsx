@@ -1,9 +1,11 @@
-import Hero from "@/components/ui/Hero";
-import ServiceTeaser from "@/components/ui/ServiceTeaser";
-import ScalingSurvey from "@/components/interactivity/ScalingSurvey";
-import CTA from "@/components/ui/CTA";
-import AnimatedSection from "@/components/ui/AnimatedSection";
-import LazyVideo from "@/components/ui/LazyVideo";
+import dynamic from 'next/dynamic';
+
+const Hero = dynamic(() => import("@/components/ui/Hero"), { ssr: true });
+const ServiceTeaser = dynamic(() => import("@/components/ui/ServiceTeaser"), { ssr: false });
+const ScalingSurvey = dynamic(() => import("@/components/interactivity/ScalingSurvey"), { ssr: false });
+const CTA = dynamic(() => import("@/components/ui/CTA"), { ssr: false });
+const AnimatedSection = dynamic(() => import("@/components/ui/AnimatedSection"), { ssr: false });
+const LazyVideo = dynamic(() => import("@/components/ui/LazyVideo"), { ssr: false });
 
 const services = [
   {

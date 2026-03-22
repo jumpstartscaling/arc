@@ -5,6 +5,7 @@ import Navigation from "@/components/ui/Navigation";
 import Footer from "@/components/ui/Footer";
 import AtmosphereParticles from "@/components/visuals/AtmosphereParticles";
 import Script from "next/script";
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -47,7 +48,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
-        {/* Microsoft Clarity */}
+        {/* Preconnect to 3rd party domains */}
+        <link rel="preconnect" href="https://www.clarity.ms" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        
+        {/* Microsoft Clarity - Using afterInteractive for performance */}
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`
             (function(c,l,a,r,i,t,y){
@@ -57,22 +62,9 @@ export default function RootLayout({
             })(window, document, "clarity", "script", "u2is508icv");
           `}
         </Script>
-        {/* Google Analytics 4 */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-VKT7QBTYNX"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-VKT7QBTYNX', {
-              send_page_view: true,
-              transport_type: 'beacon'
-            });
-          `}
-        </Script>
+
+        {/* Google Analytics 4 using official Next.js third-party component */}
+        <GoogleAnalytics gaId="G-VKT7QBTYNX" />
       </head>
       <body className="min-h-screen bg-bg-deep text-text-primary antialiased font-sans">
         <AtmosphereParticles />
