@@ -10,3 +10,4 @@
 \i 007_system.sql
 \i 008_assembly.sql
 \i 009_caw.sql
+\i 010_seed_demo_tenants.sql
