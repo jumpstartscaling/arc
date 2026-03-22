@@ -3,15 +3,7 @@ import { notFound } from 'next/navigation';
 import { getContentBySlug, getAllContentSlugs } from '@/lib/content';
 import BlockRenderer from '@/components/ui/BlockRenderer';
 
-export async function generateStaticParams() {
-  const slugs = await getAllContentSlugs();
-  // Only include tools for this route
-  return slugs
-    .filter(slug => slug.startsWith('tools/'))
-    .map(slug => ({
-      slug: slug.replace('tools/', ''),
-    }));
-}
+export const dynamic = 'force-dynamic';
 
 export default async function ToolPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

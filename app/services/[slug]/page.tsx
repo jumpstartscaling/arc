@@ -3,15 +3,7 @@ import { notFound } from 'next/navigation';
 import { getContentBySlug, getAllContentSlugs } from '@/lib/content';
 import BlockRenderer from '@/components/ui/BlockRenderer';
 
-export async function generateStaticParams() {
-  const slugs = await getAllContentSlugs();
-  // Only include services for this route
-  return slugs
-    .filter(slug => slug.startsWith('services/'))
-    .map(slug => ({
-      slug: slug.replace('services/', ''),
-    }));
-}
+export const dynamic = 'force-dynamic';
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

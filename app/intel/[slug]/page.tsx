@@ -5,14 +5,9 @@ import AnimatedSection from '@/components/ui/AnimatedSection';
 import CTA from '@/components/ui/CTA';
 import { getArticleBySlug, getAllArticleSlugs } from '@/lib/content';
 
-export async function generateStaticParams() {
-  const slugs = await getAllArticleSlugs();
-  return slugs.map((slug) => ({
-    slug,
-  }));
-}
+export const dynamic = 'force-dynamic';
 
-export default async function IntelPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
 
