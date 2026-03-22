@@ -4,6 +4,8 @@ import ServiceHero from '@/components/ui/ServiceHero';
 import ServiceTeaser from '@/components/ui/ServiceTeaser';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ToolsIndex() {
   const slugs = await getAllContentSlugs();
   const toolSlugs = slugs.filter(slug => slug.startsWith('tools/'));
