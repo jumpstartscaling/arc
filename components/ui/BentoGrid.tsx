@@ -1,31 +1,26 @@
 import React from 'react';
-import Link from 'next/link';
 
-interface BentoItem {
+interface BentoItemProps {
   title: string;
-  desc: string;
-  link: string;
+  description: string;
+  className?: string;
+  icon?: React.ReactNode;
 }
 
-interface BentoGridProps {
-  items: BentoItem[];
-}
-
-export default function BentoGrid({ items }: BentoGridProps) {
+export const BentoItem = ({ title, description, className = '', icon }: BentoItemProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-20 max-w-6xl mx-auto">
-      {items.map((item, i) => (
-        <Link 
-          key={i}
-          href={item.link} 
-          className={`glass-card block p-8 hover:border-accent hover:-translate-y-1 transition-all duration-300 ${
-            i % 4 === 0 || i % 4 === 3 ? 'md:col-span-2' : ''
-          }`}
-        >
-          <h3 className="text-2xl font-bold mb-4 gradient-text">{item.title}</h3>
-          <p className="text-white/70 leading-relaxed text-lg">{item.desc}</p>
-        </Link>
-      ))}
+    <div className={`p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-300 group ${className}`}>
+      {icon && <div className="mb-4 text-[#FFE5A0]">{icon}</div>}
+      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#FFE5A0] transition-colors">{title}</h3>
+      <p className="text-white/60 leading-relaxed">{description}</p>
+    </div>
+  );
+};
+
+export default function BentoGrid({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 ${className}`}>
+      {children}
     </div>
   );
 }

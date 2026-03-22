@@ -19,6 +19,8 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+import { getOrganizationSchema, getWebsiteSchema } from "@/lib/seo";
+
 export const metadata: Metadata = {
   title: "Jumpstart Scaling | Growth Engineering for Predictable Revenue",
   description: "Growth engineering for companies serious about predictable revenue. Paid Acquisition, Funnel Architecture, and CRM Transformation.",
@@ -48,6 +50,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
+        {/* SEO Schemas */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={getOrganizationSchema()}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={getWebsiteSchema()}
+        />
         {/* Preconnect to 3rd party domains */}
         <link rel="preconnect" href="https://www.clarity.ms" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />

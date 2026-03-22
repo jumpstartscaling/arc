@@ -1,33 +1,21 @@
 import React from 'react';
-import { Image } from 'lucide-react';
 
-interface ImagePlaceholderProps {
-    minHeight?: string;
-    description: string;
-    suggestion: string;
-}
-
-export default function ImagePlaceholder({ minHeight = "300px", description, suggestion }: ImagePlaceholderProps) {
-    return (
-        <div
-            className="w-full relative overflow-hidden rounded-2xl border-2 border-dashed border-white/10 bg-white/5 flex flex-col items-center justify-center p-8 text-center group hover:border-[#E8C677]/30 transition-colors"
-            style={{ minHeight }}
-        >
-            <div className="bg-black/40 backdrop-blur-md p-4 rounded-full mb-4 group-hover:scale-110 transition-transform duration-300">
-                <Image className="text-white/40 w-8 h-8 group-hover:text-[#E8C677] transition-colors" />
-            </div>
-
-            <h4 className="text-white/80 font-mono text-xs uppercase tracking-widest mb-2">Image Placeholder</h4>
-
-            <p className="text-[#E8C677] font-bold text-lg mb-2">
-                {suggestion}
-            </p>
-
-            <p className="text-white/50 text-sm max-w-sm">
-                Context: {description}
-            </p>
-
-            <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+export default function ImagePlaceholder({ width = 800, height = 450, text }: { width?: number; height?: number; text?: string }) {
+  return (
+    <div 
+      className="flex items-center justify-center bg-white/5 border border-white/10 rounded-2xl overflow-hidden group hover:border-[#FFE5A0]/30 transition-colors"
+      style={{ aspectRatio: `${width}/${height}` }}
+    >
+      <div className="text-center p-8">
+        <div className="w-12 h-12 border-2 border-[#FFE5A0]/20 rounded-lg mx-auto mb-4 group-hover:scale-110 transition-transform flex items-center justify-center">
+           <svg className="w-6 h-6 text-[#FFE5A0]/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+           </svg>
         </div>
-    );
+        <p className="text-white/30 text-sm font-mono tracking-widest uppercase">
+          {text || `${width}x${height}_VISUAL_ASSET`}
+        </p>
+      </div>
+    </div>
+  );
 }

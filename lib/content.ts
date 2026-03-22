@@ -20,6 +20,7 @@ export interface Article {
   content: string;
   author?: string;
   published_at: string;
+  created_at: string;
 }
 
 export async function getContentBySlug(slug: string): Promise<ContentPage | null> {
