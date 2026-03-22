@@ -51,25 +51,33 @@ export async function submitLead(data: any) {
 export async function submitSurvey(data: any) {
   try {
     const { 
-      name, email, company, role, current_revenue, target_revenue, 
-      team_size, industry, challenges, marketing_spend, channels, biggest_goal 
+      name, email, phone, industry, revenue, team, bottleneck,
+      company, role, current_revenue, target_revenue, 
+      team_size, challenges, marketing_spend, channels, biggest_goal 
     } = data;
 
     const query = `
       INSERT INTO scaling_survey_submissions (
-        name, email, company, role, current_revenue, target_revenue, 
+        name, email, phone, company, role, current_revenue, target_revenue, 
         team_size, industry, challenges, marketing_spend, channels, biggest_goal, raw_data, created_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, NOW())
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, NOW())
       RETURNING id
     `;
 
     const values = [
-      name, email, company, role, current_revenue, target_revenue,
-      team_size, industry, 
-      JSON.stringify(challenges), 
-      marketing_spend, 
-      JSON.stringify(channels), 
-      biggest_goal,
+      name, 
+      email, 
+      phone,
+      company || 'N/A', 
+      role || 'Founder', 
+      current_revenue || revenue, 
+      target_revenue || '10M+',
+      team_size || team, 
+      industry, 
+      challenges ? JSON.stringify(challenges) : JSON.stringify({ bottleneck }), 
+      marketing_spend || 'N/A', 
+      channels ? JSON.stringify(channels) : JSON.stringify([]), 
+      biggest_goal || bottleneck,
       JSON.stringify(data)
     ];
 
