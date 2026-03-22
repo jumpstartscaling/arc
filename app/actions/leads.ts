@@ -82,3 +82,13 @@ export async function submitSurvey(data: any) {
     return { success: false, error: 'Database insertion failed' };
   }
 }
+export async function captureLead(formData: FormData) {
+  const data = Object.fromEntries(formData.entries());
+  // Add metadata
+  const enrichedData = {
+    ...data,
+    page_url: typeof window !== 'undefined' ? window.location.href : '',
+    form_type: data.form_type || 'offer'
+  };
+  return submitLead(enrichedData);
+}

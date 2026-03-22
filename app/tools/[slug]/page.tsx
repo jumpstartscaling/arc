@@ -5,17 +5,17 @@ import BlockRenderer from '@/components/ui/BlockRenderer';
 
 export async function generateStaticParams() {
   const slugs = await getAllContentSlugs();
-  // Only include services for this route
+  // Only include tools for this route
   return slugs
-    .filter(slug => slug.startsWith('services/'))
+    .filter(slug => slug.startsWith('tools/'))
     .map(slug => ({
-      slug: slug.replace('services/', ''),
+      slug: slug.replace('tools/', ''),
     }));
 }
 
-export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ToolPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const page = await getContentBySlug(`services/${slug}`);
+  const page = await getContentBySlug(`tools/${slug}`);
 
   if (!page) {
     notFound();
