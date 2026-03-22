@@ -1,0 +1,18 @@
+[project]
+name = "pseo-factory-backend"
+version = "0.1.0"
+description = "God Mode pSEO Factory - FastAPI backend"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.135.1",
+    "uvicorn[standard]",
+    "sqlalchemy[asyncio]",
+    "asyncpg",
+    "alembic",
+    "pydantic-settings",
+    "python-dotenv",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
