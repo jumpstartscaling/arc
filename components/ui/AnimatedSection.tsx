@@ -6,9 +6,10 @@ interface Props {
   children: React.ReactNode;
   delay?: number;
   id?: string;
+  className?: string;
 }
 
-export default function AnimatedSection({ children, delay = 0, id }: Props) {
+export default function AnimatedSection({ children, delay = 0, id, className = "" }: Props) {
   return (
     <motion.section
       id={id}
@@ -16,7 +17,7 @@ export default function AnimatedSection({ children, delay = 0, id }: Props) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10%" }}
       transition={{ duration: 0.8, delay: delay / 1000, ease: "easeOut" }}
-      className="animated-section"
+      className={`animated-section ${className}`}
     >
       {children}
     </motion.section>

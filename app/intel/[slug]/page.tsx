@@ -54,15 +54,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         />
       </div>
       
-      <div className="container mx-auto px-6 max-w-4xl mt-20 text-white/90">
-        <AnimatedSection>
+      <div className="w-full mt-20 text-white/90">
+        <AnimatedSection className="w-full flex flex-col">
           <div 
-            className="prose prose-invert prose-emerald max-w-none"
+            className="w-full"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
         </AnimatedSection>
 
-        <div className="mt-20">
+        <div className="container mx-auto px-6 max-w-4xl mt-20">
           <CTA heading="Ready to Audit Your CRM?" text="Discover the hidden revenue leaks in your current growth stack." />
         </div>
       </div>

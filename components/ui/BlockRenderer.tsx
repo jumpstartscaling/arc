@@ -44,15 +44,11 @@ export default function BlockRenderer({ blocks }: { blocks: Block[] }) {
             );
           case 'text':
             return (
-              <AnimatedSection key={index} delay={index * 100}>
-                <div className="container mx-auto px-6 max-w-4xl py-12">
-                  <GlassCard title={block.data.title}>
-                    <div 
-                      className="prose prose-invert prose-lg max-w-none text-white/80"
-                      dangerouslySetInnerHTML={{ __html: block.data.content }}
-                    />
-                  </GlassCard>
-                </div>
+              <AnimatedSection key={index} delay={index * 100} className="w-full flex flex-col">
+                <div 
+                  className="w-full"
+                  dangerouslySetInnerHTML={{ __html: block.data.content }}
+                />
               </AnimatedSection>
             );
           case 'bento':
