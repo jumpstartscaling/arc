@@ -50,3 +50,7 @@ Seeded domains (must match `Host` → `site_displays.domain`):
 The Next.js home page calls `GET /api/v1/site-displays/resolve?host=...` and renders nav + `home` page from the DB.
 
 **API docs:** `/docs` → `site-displays` → `resolve`.
+
+## Migrating from your original database
+
+This repo does **not** include access to your old database. To copy data into the new Postgres, see [docs/MIGRATION_ORIGINAL_DB.md](docs/MIGRATION_ORIGINAL_DB.md) and `scripts/migrate-from-original-postgres.sh`.
