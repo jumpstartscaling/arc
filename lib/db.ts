@@ -9,9 +9,9 @@ const useSsl = isProd && !dbUrl.includes(':5434');
 const pool = new Pool({
   connectionString: dbUrl,
   ssl: useSsl ? { rejectUnauthorized: false } : false,
-  max: 5, // Limit concurrent connections to avoid hitting DB limits during parallel build workers
+  max: 2, // Even more conservative for build machines
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
+  connectionTimeoutMillis: 10000,
 });
 
 export default pool;
