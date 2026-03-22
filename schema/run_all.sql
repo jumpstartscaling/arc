@@ -11,3 +11,4 @@
 \i 008_assembly.sql
 \i 009_caw.sql
 \i 010_seed_demo_tenants.sql
+\i 011_seed_preview_slug.sql

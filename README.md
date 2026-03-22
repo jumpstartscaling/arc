@@ -51,6 +51,10 @@ The Next.js home page calls `GET /api/v1/site-displays/resolve?host=...` and ren
 
 **API docs:** `/docs` → `site-displays` → `resolve`.
 
+## Tenant routing vs many tables
+
+Lots of tables are for campaigns, articles, analytics, and legacy flows. **Marketing routes** use only **`site_displays`** + **`site_contents`** (not `sites.url`). See [docs/DATABASE_TENANT_MODEL.md](docs/DATABASE_TENANT_MODEL.md).
+
 ## Migrating from your original database
 
 This repo does **not** include access to your old database. To copy data into the new Postgres, see [docs/MIGRATION_ORIGINAL_DB.md](docs/MIGRATION_ORIGINAL_DB.md) and `scripts/migrate-from-original-postgres.sh`.
